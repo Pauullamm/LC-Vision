@@ -1,7 +1,7 @@
 import psycopg2
 from config import load_config
 
-def create_tables():
+def command():
     commands = ("""
                 CREATE TABLE test (
                 id SERIAL PRIMARY KEY,
@@ -22,4 +22,4 @@ def create_tables():
         print(error)
 
 if __name__ == '__main__':
-    create_tables()
+    command()

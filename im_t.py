@@ -12,7 +12,7 @@ def encode_image(image_path):
     return base64.b64encode(image_file.read()).decode('utf-8')
 
 # Path to your image
-image_path = "/content/download.jpeg"
+image_path = "./images/00206043.jpg"
 
 # Getting the base64 string
 base64_image = encode_image(image_path)
@@ -30,7 +30,7 @@ payload = {
       "content": [
         {
           "type": "text",
-          "text": "Describe the tablet(s) in this image, and only the tablets"
+          "text": "Describe the tablet(s) in this image, and only the tablets/capsules"
         },
         {
           "type": "image_url",

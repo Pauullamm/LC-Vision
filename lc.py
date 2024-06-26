@@ -1,12 +1,11 @@
 from CustomDocLoader import CustomDocumentLoader
 from langchain_openai import ChatOpenAI
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores import LanceDB
-
+from langchain_community.vectorstores import LanceDB
 import os
 
 api_key = os.environ["OPENAI_API_KEY"]
-path_to_file = ""
+path_to_file = "formatted_text.txt"
 loader = CustomDocumentLoader(path_to_file)
 docs = loader.load()
 llm = ChatOpenAI(openai_api_key=api_key, max_tokens=1000, model='gpt-4o')

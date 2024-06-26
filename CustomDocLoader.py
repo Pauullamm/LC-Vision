@@ -3,6 +3,7 @@ from typing import AsyncIterator, Iterator
 
 from langchain_core.document_loaders import BaseLoader
 from langchain_core.documents import Document
+import aiofiles
 
 
 class CustomDocumentLoader(BaseLoader):

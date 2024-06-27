@@ -5,7 +5,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 
 from lc import llm, vector_store
-from im_t import response
+from langchain.image_process import response
 
 img_info = response.json()["choices"][0]["message"]["content"]
 

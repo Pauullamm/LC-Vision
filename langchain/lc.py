@@ -1,4 +1,4 @@
-from CustomDocLoader import CustomDocumentLoader
+from langchain.CustomDocLoader import CustomDocumentLoader
 from langchain_openai import ChatOpenAI
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import LanceDB

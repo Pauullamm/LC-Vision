@@ -23,7 +23,8 @@ document.getElementById('uploadForm').addEventListener('submit', function(e) {
 });
 
 function sendImage(data) {
-    fetch('/upload', {
+    const baseUrl = window.location.origin
+    fetch(`/upload`, {
         method: 'POST',
         body: data
     })

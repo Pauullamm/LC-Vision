@@ -1,5 +1,7 @@
 import sqlite3
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
+
 import base64
 import os
 from openai import OpenAI
@@ -7,8 +9,8 @@ from openai import OpenAI
 api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI(api_key=api_key)
 app = Flask(__name__)
+CORS(app)
 
-# Database connection (replace 'images.db' with your desired filename)
 conn = sqlite3.connect('images.db')
 c = conn.cursor()
 

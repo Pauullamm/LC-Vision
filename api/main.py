@@ -34,8 +34,8 @@ def upload_image():
             return jsonify({'error': 'Missing image data'}), 400
         cache = []
         for image in images:
-            with open(image, "rb") as img:
-                decoded_image = base64.b64decode(img.read()).decode()
+            
+            decoded_image = base64.b64decode(image.read()).decode()
             with open("output_image.jpg", "wb") as f:
                 f.write(decoded_image)
             cache.append(decoded_image)

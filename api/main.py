@@ -34,16 +34,12 @@ def upload_image():
             return jsonify({'error': 'Missing image data'}), 400
         cache = []
         for image in images:
-            decoded_image = base64.b64decode(image)
+            with open(image, "rb") as img:
+                decoded_image = base64.b64decode(img.read()).decode()
             with open("output_image.jpg", "wb") as f:
                 f.write(decoded_image)
             cache.append(decoded_image)
-            # Process the image (replace with your processing logic)
-            outcome = "Image processed successfully!"  # Replace with actual outcome
-            # Function to encode the image
-        
-        # Path to your image
-        # image_path = "./images/00206043.jpg"
+            outcome = "Image processed successfully!"  
         params =[
                     {
                         "role": "user",

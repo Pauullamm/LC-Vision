@@ -21,10 +21,10 @@ document.getElementById('uploadForm').addEventListener('submit', function(e) {
         reader.readAsDataURL(file);
     }
 });
-
+port = process.env.BE_EP
 function sendImage(data) {
     const baseUrl = window.location.origin
-    fetch(`/upload`, {
+    fetch(`${port}/upload`, {
         method: 'POST',
         body: data
     })

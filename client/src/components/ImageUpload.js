@@ -44,12 +44,31 @@ const ImageUpload = () => {
 
   return (
     <div>
-      <input type="file" accept="image/*" onChange={handleImageChange} disabled={isUploading} />
-      <button type="button" onClick={handleSubmit} disabled={isUploading}>
+      <div>
+        <input className='my-3' type="file" accept="image/*" onChange={handleImageChange} disabled={isUploading} />
+      </div>
+      <div>
+      <button className='
+      my-10
+      bg-transparent 
+      hover:bg-blue-500 
+      text-blue-700 
+      font-semibold 
+      hover:text-white 
+      py-2 
+      px-4 
+      border 
+      border-blue-500 
+      hover:border-transparent 
+      rounded' 
+      type="button" onClick={handleSubmit} disabled={isUploading}>
         {isUploading ? 'Uploading...' : 'Upload Image'}
       </button>
+      </div>
+      
       {uploadMessage && <p>{uploadMessage}</p>}
     </div>
+    
   );
 };
 

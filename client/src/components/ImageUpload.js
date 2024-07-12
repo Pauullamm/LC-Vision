@@ -6,13 +6,15 @@ const ImageUpload = () => {
   const [uploadMessage, setUploadMessage] = useState('');
 
   const handleImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => setSelectedImage(e.target.result);
-      reader.readAsDataURL(event.target.files[0]);
-      setIsUploading(true);
-      setUploadMessage(''); // Clear previous messages
-    }
+    // if (event.target.files && event.target.files[0]) {
+      
+    // }
+    const reader = new FileReader();
+    let file = event.target.files[0]
+    reader.onload = (e) => setSelectedImage(e.target.result);
+    reader.readAsDataURL(file);
+    setIsUploading(true);
+    setUploadMessage(''); // Clear previous messages
   };
 
   const handleSubmit = async () => {

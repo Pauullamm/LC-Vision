@@ -68,8 +68,9 @@ def upload_image():
             }
             payload["messages"][0]["content"].append(a)
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-        img_info = response.json()["choices"][0]["message"]["content"]
-        print(img_info)
+        print(response.json())
+        # img_info = response.json()["choices"][0]["message"]["content"]
+        # print(img_info)
         # # Save image data and outcome to database
         # c.execute('''INSERT INTO images (image_data, outcome) 
         #           VALUES (?, ?)''', 

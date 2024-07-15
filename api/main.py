@@ -30,17 +30,14 @@ conn.commit()
 def upload_image():
     try:
         files = request.files.getlist('images')
-        cache = []
         base64_images = []
         for file in files:
             image_data = file.read() # read file as bytes
             base64_image = base64.b64encode(image_data).decode('utf-8') # convert bytes to base64 string
             base64_images.append(base64_image)
-            print("images read")
         # with open("output_image.jpg", "wb") as f:
         #     f.write(base64_images[0])
         #     print("base64 written to images")
-        # cache.append(base64_images[0])
         outcome = "Image(s) received!"
         print(outcome)
         headers = {
@@ -56,24 +53,20 @@ def upload_image():
                         {
                             "type": "text",
                             "text": "Describe the tablet(s) in this image, and only the tablets"
-                        },
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                            "url": f"data:image/jpeg;base64,{base64_image}"
-                            }
                         }
                     ]
                 }
             ],
             "max_tokens": 300
             }
-        for image_data in cache:
+        for image_data in base64_images:
             a = {
-                "type": "image",
-                "image": image_data
+                "type": "image_url",
+                "image_url": {
+                            "url": f"data:image/jpeg;base64,{image_data}",
+                            }
             }
-        payload["messages"][0]["content"].append(a)
+            payload["messages"][0]["content"].append(a)
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         img_info = response.json()["choices"][0]["message"]["content"]
         print(img_info)

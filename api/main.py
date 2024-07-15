@@ -26,20 +26,23 @@ conn.commit()
 
 #image processing
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['POST'], strict_slashes=False)
 def upload_image():
     try:
-        images = request.form.getlist('image')  # Handle multiple images
-        if not images:
+        if 'image' not in request.files:
+            return jsonify({'error': 'No image part in the request'}), 400
+
+        image = request.files['image']  # Handle multiple images
+        if not image or image.filename == "":
             return jsonify({'error': 'Missing image data'}), 400
         cache = []
-        for image in images:
             
-            decoded_image = base64.b64decode(image.read()).decode()
-            with open("output_image.jpg", "wb") as f:
-                f.write(decoded_image)
-            cache.append(decoded_image)
-            outcome = "Image processed successfully!"  
+        decoded_image = base64.b64decode(image.read()).decode()
+        with open("output_image.jpg", "wb") as f:
+            f.write(decoded_image)
+        cache.append(decoded_image)
+        outcome = "Image processed successfully!"
+        print(outcome)
         params =[
                     {
                         "role": "user",

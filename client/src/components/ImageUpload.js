@@ -6,15 +6,16 @@ const ImageUpload = () => {
   const [uploadMessage, setUploadMessage] = useState('');
 
   const handleImageChange = (event) => {
-    // if (event.target.files && event.target.files[0]) {
-      
-    // }
-    const reader = new FileReader();
-    let file = event.target.files[0]
-    reader.onload = (e) => setSelectedImage(e.target.result);
-    reader.readAsDataURL(file);
-    setIsUploading(true);
-    setUploadMessage(''); // Clear previous messages
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      let file = event.target.files[0]
+      reader.onload = (e) => {
+        setSelectedImage(e.target.result);
+      };
+      reader.readAsDataURL(file);
+      setIsUploading(true);
+      setUploadMessage(''); // Clear previous messages
+      }  
   };
 
   const handleSubmit = async () => {
@@ -22,17 +23,26 @@ const ImageUpload = () => {
       setUploadMessage('Please select an image to upload');
       return;
     }
+    else {
+      console.log(selectedImage);
+    }
 
     setIsUploading(true);
-    const port = process.env.BE_EP
+    const port =  `http://localhost:5000/upload` //process.env.BE_EP
+    const formData = new FormData();
+    formData.append('image', selectedImage);
     try {
+      console.log(selectedImage)
       const response = await fetch(port, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ image: selectedImage }),
+        body: formData //JSON.stringify({ image: selectedImage }),
       });
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
 
       const data = await response.json();
       setUploadMessage(data.message); // Display success or error message

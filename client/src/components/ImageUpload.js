@@ -61,8 +61,7 @@ function ImageUpload() {
 
   return (
     <div class="flex flex-col">
-      <h1>Image Upload</h1>
-      <div class="flex justify-center">
+      <div class="flex justify-center py-10">
         <input type="file" multiple onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
       </div>

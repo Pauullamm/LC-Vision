@@ -23,7 +23,7 @@ function ImageUpload() {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+      console.log('Response:', response);
       setBase64Images(response.data.base64_images);
     } catch (error) {
       console.error('Error uploading images', error);

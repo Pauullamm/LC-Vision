@@ -77,7 +77,7 @@ def upload_image():
         #           (decoded_image, outcome))
         # conn.commit()
 
-        return jsonify({'message': img_info})
+        return jsonify({'message': response})
     except Exception as e:
         print(f"Error processing images: {e}")
         return jsonify({'error': 'Internal server error'}), 500

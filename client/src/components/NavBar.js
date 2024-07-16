@@ -1,10 +1,5 @@
-import React, { useState } from 'react';
 
 function Navbar() {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
 
     return (
             <nav class="bg-gray-800">
@@ -29,9 +24,9 @@ function Navbar() {
                         </div>
                         <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
-                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" aria-current="page">Dashboard</a>
-                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">API Key</a>
-                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">EMC</a>
+                            <a href="/" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" aria-current="page">Dashboard</a>
+                            <a href="/" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">API Key</a>
+                            <a href="https://www.medicines.org.uk/emc/" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">EMC</a>
                         </div>
                         </div>
                     </div>

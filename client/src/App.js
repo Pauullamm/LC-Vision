@@ -1,13 +1,15 @@
 import './App.css';
 import ImageUpload from './components/ImageUpload';
 import NavBar from './components/NavBar';
+import Loader from './components/Loader';
 
 function App() {
   return (
     <div className="App">
       <NavBar />
-      <h1 className="text-3xl font-bold underline"></h1>
+      
       <ImageUpload />
+      <Loader />
     </div>
   );
 }

@@ -16,6 +16,8 @@ code {
     monospace;
 }
 
+
+/* Loader styling here */
 @layer utilities {
   .svg-spinner {
     @apply w-[3.25em];
@@ -52,4 +54,15 @@ code {
       stroke-dashoffset: -125px;
     }
   }
+}
+
+/* API KEY input styling here */
+.inputSection {
+  overflow: hidden; /* Ensure content doesn't overflow */
+  max-width: 0; /* Start with 0 width */
+  transition: max-width 0.3s ease; /* Smooth transition effect */
+}
+
+.inputSection.open {
+  max-width: 200px; /* Width of the input section when open */
 }

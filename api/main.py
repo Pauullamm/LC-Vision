@@ -3,11 +3,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import base64
 import os
-from openai import OpenAI
 import requests
 
-# api_key = os.environ["OPENAI_API_KEY"]
-# client = OpenAI(api_key=api_key)
 app = Flask(__name__)
 CORS(app)
 
@@ -29,7 +26,7 @@ conn.commit()
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-        api_key = jsonify(request.json)["input"]
+        api_key = request.json["input"]
         if not api_key:
             return jsonify({"message": "Please input an OpenAI API key"})
         files = request.files.getlist('images')
@@ -77,7 +74,7 @@ def upload_image():
         #           (decoded_image, outcome))
         # conn.commit()
 
-        return jsonify({'API key status': "API key received:"+api_key, 'message': response.json()})
+        return jsonify({ 'message': response.json()})
     except Exception as e:
         print(f"Error processing images: {e}")
         return jsonify({'error': 'Internal server error'}), 500

@@ -1,7 +1,6 @@
 import './App.css';
 import ImageUpload from './components/ImageUpload';
 import NavBar from './components/NavBar';
-import Loader from './components/Loader';
 
 function App() {
   return (
@@ -9,7 +8,6 @@ function App() {
       <NavBar />
       
       <ImageUpload />
-      <Loader />
     </div>
   );
 }

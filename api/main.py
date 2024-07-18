@@ -6,8 +6,8 @@ import os
 from openai import OpenAI
 import requests
 
-api_key = os.environ["OPENAI_API_KEY"]
-client = OpenAI(api_key=api_key)
+# api_key = os.environ["OPENAI_API_KEY"]
+# client = OpenAI(api_key=api_key)
 app = Flask(__name__)
 CORS(app)
 
@@ -16,10 +16,10 @@ c = conn.cursor()
 
 # Database schema definition (executed only once)
 c.execute('''CREATE TABLE IF NOT EXISTS images (
-             id INTEGER PRIMARY KEY AUTOINCREMENT,
-             image_data TEXT,
-             outcome TEXT,
-             comment TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            image_data TEXT,
+            outcome TEXT,
+            comment TEXT
 )''')
 conn.commit()
 
@@ -29,15 +29,15 @@ conn.commit()
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
+        api_key = jsonify(request.json)["input"]
+        if not api_key:
+            return jsonify({"message": "Please input an OpenAI API key"})
         files = request.files.getlist('images')
         base64_images = []
         for file in files:
             image_data = file.read() # read file as bytes
             base64_image = base64.b64encode(image_data).decode('utf-8') # convert bytes to base64 string
             base64_images.append(base64_image)
-        # with open("output_image.jpg", "wb") as f:
-        #     f.write(base64_images[0])
-        #     print("base64 written to images")
         outcome = "Image(s) received!"
         print(outcome)
         headers = {
@@ -77,11 +77,10 @@ def upload_image():
         #           (decoded_image, outcome))
         # conn.commit()
 
-        return jsonify({'message': response.json()})
+        return jsonify({'API key status': "API key received:"+api_key, 'message': response.json()})
     except Exception as e:
         print(f"Error processing images: {e}")
         return jsonify({'error': 'Internal server error'}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)

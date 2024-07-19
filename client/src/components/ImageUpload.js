@@ -86,7 +86,7 @@ function ImageUpload() {
         {resizedImage && <img src={resizedImage} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
       </div>
       {uploadImage && <Loader />}
-      |<div class="flex justify-center"><p class="w-1/2 text-gray-300">{outputResponse}</p></div>
+      <div class="flex justify-center"><p class="w-1/2 text-gray-300">{outputResponse}</p></div>
       
     </div>
   );

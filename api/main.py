@@ -39,7 +39,7 @@ def upload_image():
         print(outcome)
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
+            "Authorization": f"Bearer {jsonify(api_key)}"
 }
         payload = {
             "model": "gpt-4o",

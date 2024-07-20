@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
+import { useSelector } from 'react-redux';
 
 function ImageUpload() {
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [resizedImage, setResizedImage] = useState(null);
   const [outputResponse, setOutputResponse] = useState("");
   const [uploadImage, setUploadImage] = useState(false)
+  const inputValue = useSelector((state) => state.input.inputValue);
 
   const handleFileChange = (event) => {
     setSelectedFiles(event.target.files);
@@ -77,7 +79,7 @@ function ImageUpload() {
           <div class="content-center">
             <input class="text-gray-300" type="file" multiple onChange={handleFileChange} />
           </div>
-          <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center cursor-pointer" onClick={handleUpload}>Upload</button>
+          <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" style={{ cursor: inputValue.trim() ? 'pointer' : 'not-allowed' }} disabled={!inputValue.trim()} onClick={handleUpload}>Upload</button>
         </div>
         
       </div>

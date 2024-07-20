@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { setInputValue } from "../redux/actions";
 
 function Navbar() {
     const [apiSectionOpen, setApiSectionOpen] = useState(false);
-    const [inputValue, setInputValue] = useState('');
+    const dispatch = useDispatch();
+    const inputValue = useSelector((state) => state.input.inputValue);
+
 
     const toggleApiInput = () => {
         if (!apiSectionOpen) {
@@ -13,8 +17,8 @@ function Navbar() {
         }
     };
 
-    const handleInputChange = (e) => {
-        setInputValue(e.target.value);
+    const handleInputChange = (event) => {
+        dispatch(setInputValue(event.target.value));
     };
 
     const handleKeyDown = async (e) => {
@@ -22,7 +26,7 @@ function Navbar() {
             e.preventDefault();
 
             const data = {input: inputValue};
-            const port = process.env.REACT_APP_BE_EP
+            const port = 'https://lc-vision.onrender.com/upload'//process.env.REACT_APP_BE_EP
             try {
                 const response = await fetch(port, {
                     method: 'POST',
@@ -43,7 +47,7 @@ function Navbar() {
     }
 
     return (
-            <nav class="bg-gray-800">
+            <nav class="bg-gray-900">
                 <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div class="relative flex h-16 items-center justify-between">
                     <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -62,7 +66,7 @@ function Navbar() {
                             focus:outline-none focus:shadow-outline" 
                             id="password" 
                             type="password" 
-                            placeholder="Enter API Key" 
+                            placeholder="Enter API Key"
                             onChange={handleInputChange}
                             onKeyDown={handleKeyDown}
                             />

@@ -10,6 +10,20 @@ function ImageUpload() {
   const [outputResponse, setOutputResponse] = useState("");
   const [uploadImage, setUploadImage] = useState(false)
   const inputValue = useSelector((state) => state.input.inputValue);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  
+  const handleMouseOver = (event) => {
+    if (!inputValue.trim()) {
+      setTooltipPosition({ x: event.clientX, y: event.clientY });
+      setTooltipVisible(true);
+    }
+  };
+
+  const handleMouseOut = () => {
+    setTooltipVisible(false);
+  };
+
 
   const handleFileChange = (event) => {
     setSelectedFiles(event.target.files);
@@ -79,7 +93,30 @@ function ImageUpload() {
           <div class="content-center">
             <input class="text-gray-300" type="file" multiple onChange={handleFileChange} />
           </div>
-          <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" style={{ cursor: inputValue.trim() ? 'pointer' : 'not-allowed' }} disabled={!inputValue.trim()} onClick={handleUpload}>Upload</button>
+          <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" 
+          style={{ cursor: inputValue.trim() ? 'pointer' : 'not-allowed' }} 
+          disabled={!inputValue.trim()} 
+          onClick={handleUpload}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
+          >Upload</button>
+
+          {tooltipVisible && (
+        <div 
+          style={{ 
+            position: 'absolute', 
+            left: `${tooltipPosition.x}px`, 
+            top: `${tooltipPosition.y}px`,
+            backgroundColor: 'black',
+            color: 'white',
+            padding: '5px',
+            borderRadius: '3px',
+            pointerEvents: 'none'
+          }}
+        >
+          Please add your API key first!
+        </div>
+      )}
         </div>
         
       </div>

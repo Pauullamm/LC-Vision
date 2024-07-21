@@ -58,7 +58,7 @@ function Navbar() {
                         <div className="flex space-x-3">
                             <a href="/" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" aria-current="page">Home</a>
                             <Link to='/about' className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</Link>
-                            <a href="https://www.medicines.org.uk/emc/" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">EMC</a>
+                            <a href="https://www.medicines.org.uk/emc/" target="_blank" rel="noopener noreferrer" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">EMC</a>
                             <button className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" onClick={toggleApiInput}>API Key</button>
                             <div className={`inputSection ${apiSectionOpen ? "open": ""} content-center`}>
                             <input className="content-center 

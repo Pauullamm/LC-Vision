@@ -1,12 +1,17 @@
-import './App.css';
-import ImageUpload from './components/ImageUpload';
-import NavBar from './components/NavBar';
+//routing
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import NavBar from './components/NavBar'
+import AboutPage from './pages/AboutPage';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <NavBar />
-      <ImageUpload />
+      <Routes>
+        <Route path='/' exact element={<HomePage />} />
+        <Route path='/about' element={<AboutPage />}/>
+      </Routes>
     </div>
   );
 }

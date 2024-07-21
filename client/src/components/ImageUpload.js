@@ -85,15 +85,15 @@ function ImageUpload() {
   };
 
   return (
-    <div class="flex flex-col">
-      <h1 class="mt-5 text-gray-300 text-2xl font-bold">Select an image to upload</h1>
+    <div className="flex flex-col">
+      <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">Select an image to upload</h1>
 
-      <div class="flex justify-center">
-        <div class="flex justify-center py-2 px-2 border-solid border-2 w-max h-max rounded-md mt-5">
-          <div class="content-center">
-            <input class="text-gray-300" type="file" multiple onChange={handleFileChange} />
+      <div className="flex justify-center">
+        <div className="flex justify-center py-2 px-2 border-solid border-2 w-max h-max rounded-md mt-5">
+          <div className="content-center">
+            <input className="text-gray-300" type="file" multiple onChange={handleFileChange} />
           </div>
-          <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" 
+          <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" 
           style={{ cursor: inputValue.trim() ? 'pointer' : 'not-allowed' }} 
           disabled={!inputValue.trim()} 
           onClick={handleUpload}
@@ -120,12 +120,12 @@ function ImageUpload() {
         </div>
         
       </div>
-      <div class="flex justify-center">
+      <div className="flex justify-center">
         
         {resizedImage && <img src={resizedImage} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
       </div>
       {uploadImage && <Loader />}
-      <div class="flex justify-center"><p class="w-1/2 text-gray-300">{outputResponse}</p></div>
+      <div className="flex justify-center"><p className="w-1/2 text-gray-300">{outputResponse}</p></div>
       
     </div>
   );

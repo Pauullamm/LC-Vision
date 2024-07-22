@@ -69,7 +69,8 @@ function ImageUpload() {
     }
     setUploadImage(true)
     try {
-      const port = "https://lc-vision.onrender.com/upload"//process.env.BE_EP
+      const port = process.env.REACT_APP_BE_EP
+      console.log(port)
       const response = await axios.post(port, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -86,8 +87,8 @@ function ImageUpload() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">Select an image to upload</h1>
-
+      <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">1. Enter your OpenAI API key</h1>
+      <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">2. Select an image to upload</h1>
       <div className="flex justify-center">
         <div className="flex justify-center py-2 px-2 border-solid border-2 w-max h-max rounded-md mt-5">
           <div className="content-center">

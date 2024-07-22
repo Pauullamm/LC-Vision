@@ -40,7 +40,7 @@ return (
     </div>
     <p className='text-center text-gray-300 text-lg font-medium'>This is still very much a work in progress, and sometimes I have no idea what I'm doing</p>
     <div className='flex justify-center items-center'>
-        <img alt='tech' src='https://media1.giphy.com/media/NAcNfRrU6f2bC/giphy.gif' className='h-1/3 w-1/3'></img>
+        <img alt='tech' src='https://media1.giphy.com/media/NAcNfRrU6f2bC/giphy.gif' className='h-1/5 w-1/5'></img>
     </div>
     <br />
     <p className='text-center text-gray-300 text-lg font-medium'>So please don't expect this to be a marketable product in any way, shape, or form hahaha, but in the meantime, I hope you'll enjoy fiddling around with it, please let me know if you have any suggestions, thank you!

@@ -18,6 +18,13 @@ code {
     monospace;
 }
 
+/* arrow styling */
+.curved-arrow-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Ensure it is behind other components */
+}
 
 /* Loader styling here */
 @layer utilities {

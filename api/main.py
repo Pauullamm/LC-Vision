@@ -26,9 +26,10 @@ conn.commit()
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-        api_key = request.json["input"]
+        api_key = request.form["input"]
         if not api_key:
             return jsonify({"message": "Please input an OpenAI API key"})
+        
         files = request.files.getlist('images')
         base64_images = []
         for file in files:
@@ -39,7 +40,7 @@ def upload_image():
         print(outcome)
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {jsonify(api_key)}"
+            "Authorization": f"Bearer {api_key}"
 }
         payload = {
             "model": "gpt-4o",
@@ -49,7 +50,17 @@ def upload_image():
                     "content": [
                         {
                             "type": "text",
-                            "text": "Describe the tablet(s) in this image, and only the tablets"
+                            "text": '''Describe the tablet(s) and/or capsule(s) in this image, and only the tablet(s) and/or capsule(s).
+                                        Please format your answer based on the following:
+                                        1. Colour: i.e. what colour(s) are the tablet(s)/capsule(s)
+                                        2. Shape: i.e. what shape(s) are the tablet(s)/capsule(s)
+                                        3. Markings: i.e. what markings are visible on the tablet(s)/capsule(s)
+                                        4. Additional details:  for example - score lines, or how the markings/colours are printed on the tablet/capsule. If there are no additional details, answer with "NIL"
+                                        5. Visibility: i.e. How well you are able to see the details on the tablet/capsule (respond with a float number between 0 to 10)
+                                        If you are unable to see any of the above clearly, mention it in your response, don't try to guess what the ambiguous features are
+                                        If there are no tablet(s)/capsule(s) in the image, respond with:
+                                        "No tablet(s)/capsule(s) identified, please try again"
+                                        '''
                         }
                     ]
                 }

@@ -26,16 +26,21 @@ function Navbar() {
     const handleKeyDown = async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-
-            const data = {input: inputValue};
-            const port = process.env.REACT_APP_BE_EP
+            const formData = new FormData();
+            formData.append({input: inputValue});
+            // const data = {input: inputValue};
+            const port = process.env.REACT_APP_ENDPOINT
             try {
                 const response = await fetch(port, {
                     method: 'POST',
+                    // headers: {
+                    //     'Content-Type': 'application/json',
+                    // },
+                    // body: JSON.stringify(data),
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data'
                     },
-                    body: JSON.stringify(data),
+                    body: formData
                 });
                 if (response.ok) {
                     console.log(response);

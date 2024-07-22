@@ -69,7 +69,7 @@ function ImageUpload() {
     }
     setUploadImage(true)
     try {
-      const port = process.env.REACT_APP_BE_EP
+      const port = process.env.REACT_APP_ENDPOINT
       console.log(port)
       const response = await axios.post(port, formData, {
         headers: {

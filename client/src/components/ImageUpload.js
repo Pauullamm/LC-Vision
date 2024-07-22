@@ -70,12 +70,7 @@ function ImageUpload() {
     setUploadImage(true)
     try {
       const port = process.env.REACT_APP_ENDPOINT
-      console.log(port)
-      const response = await axios.post(port, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(port, formData);
       const ai_res = response.data.message.choices[0].message.content;
       setUploadImage(false);
       setOutputResponse(ai_res);

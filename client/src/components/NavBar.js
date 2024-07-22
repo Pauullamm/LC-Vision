@@ -27,19 +27,11 @@ function Navbar() {
         if (e.key === 'Enter') {
             e.preventDefault();
             const formData = new FormData();
-            formData.append({input: inputValue});
-            // const data = {input: inputValue};
+            formData.append('input', inputValue);
             const port = process.env.REACT_APP_ENDPOINT
             try {
                 const response = await fetch(port, {
                     method: 'POST',
-                    // headers: {
-                    //     'Content-Type': 'application/json',
-                    // },
-                    // body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
                     body: formData
                 });
                 if (response.ok) {

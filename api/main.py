@@ -26,18 +26,22 @@ conn.commit()
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-        api_key = request.form["input"]
-        if not api_key:
+        if "input" in request.form:
+            api_key = request.form["input"]
+        else:
             return jsonify({"message": "Please input an OpenAI API key"})
         
-        files = request.files.getlist('images')
-        base64_images = []
-        for file in files:
-            image_data = file.read() # read file as bytes
-            base64_image = base64.b64encode(image_data).decode('utf-8') # convert bytes to base64 string
-            base64_images.append(base64_image)
-        outcome = "Image(s) received!"
-        print(outcome)
+        if "images" in request.files:
+            files = request.files.getlist('images')
+            base64_images = []
+            for file in files:
+                image_data = file.read() # read file as bytes
+                base64_image = base64.b64encode(image_data).decode('utf-8') # convert bytes to base64 string
+                base64_images.append(base64_image)
+            outcome = "Image(s) received!"
+            print(outcome)
+        else:
+            return jsonify({"message": "Please upload an image"})
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}"

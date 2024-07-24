@@ -10,9 +10,18 @@ function Navbar() {
     const inputValue = useSelector((state) => state.input.inputValue);
     const [menuOpen, setMenuOpen] = useState(false);
     useEffect(() => {
-        console.log('Component mounted, default state is false.');
-        // Any additional setup code can go here if needed
-      }, []); // Empty dependency array ensures it runs once
+        const handleResize = () => {
+            if (window.innerWidth >=768) {
+                setMenuOpen(false);
+            } else {
+                setMenuOpen(true);
+                toggleMenu();
+            }
+        };
+        window.addEventListener('resize', handleResize);
+
+        
+    }, []);
     
     const toggleMenu = () => {
         setMenuOpen(prevState => !prevState);

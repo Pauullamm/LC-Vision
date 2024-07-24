@@ -81,7 +81,7 @@ function ImageUpload() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col md:min-w-sm">
       <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">1. Enter your OpenAI API key</h1>
       <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">2. Select an image to upload</h1>
       <div className="flex justify-center">

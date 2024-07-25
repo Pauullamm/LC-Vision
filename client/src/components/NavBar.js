@@ -105,8 +105,8 @@ function Navbar() {
                         </div>
                     </div>
                         <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0" >
-                            <h1 className="navbar-title text-3xl font-black italic text-gray-300">LC-Vision Pill Checker </h1>
-                            <h1 className="navbar-title text-3xl font-black text-gray-300">🔎</h1>
+                            <h2 className="navbar-title text-3xl font-black italic text-gray-300">LC-Vision Pill Checker </h2>
+                            <h2 className="navbar-title text-3xl font-black text-gray-300">🔎</h2>
 
                         </div>
                         
@@ -125,6 +125,7 @@ function Navbar() {
                                 content-center 
                                 appearance-none 
                                 py-1 px-2 
+                                mx-2
                                 border border-black-500 
                                 rounded w-full text-gray-700 leading-tight 
                                 focus:outline-none focus:shadow-outline" 

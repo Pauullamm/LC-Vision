@@ -28,7 +28,7 @@ function Navbar() {
             e.preventDefault();
             const formData = new FormData();
             formData.append('input', inputValue);
-            const port = process.env.REACT_APP_ENDPOINT
+            const port = process.env.REACT_APP_KEY_ENDPOINT
             try {
                 const response = await fetch(port, {
                     method: 'POST',

@@ -1,12 +1,16 @@
 import sqlite3
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS, cross_origin
 import base64
-import os
 import requests
+from werkzeug.utils import secure_filename
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 CORS(app)
+app.secret_key = os.getenv("SECRET_KEY")
 
 conn = sqlite3.connect('images.db')
 c = conn.cursor()
@@ -20,17 +24,32 @@ c.execute('''CREATE TABLE IF NOT EXISTS images (
 )''')
 conn.commit()
 
+#api key processing
+@app.route('/key', methods=['POST'])
+def upload_key():
+    try:
+        if "input" in request.form:
+            api_key = request.form["input"]
+            session['api_key'] = api_key
+            print(session['api_key'])
+            return jsonify({"message": "API key received"}), 200
+        else:
+            return jsonify({"message": "Please input an OpenAI API key"}), 400
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Internal server error'}), 500
 
 #image processing
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-        if "input" in request.form:
-            api_key = request.form["input"]
-        else:
-            return jsonify({"message": "Please input an OpenAI API key"})
-        
+        print(session)
+        if 'api_key' not in session:
+            return jsonify({'error': 'api key required before uploading image'}), 400
+
+        api_key = session['api_key']
+
         if "images" in request.files:
             files = request.files.getlist('images')
             base64_images = []

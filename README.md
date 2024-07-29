@@ -4,5 +4,5 @@ todo:
 
 1. set up feedback database for RLHF
 2. link frontend to be processed by lc backend on flask
-3. fix image processing errors
+3. fix image processing errors - fix upload and api key endpoints
 4. prepare images for testing

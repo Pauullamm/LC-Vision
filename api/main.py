@@ -8,16 +8,21 @@ import os
 from dotenv import load_dotenv
 from flask_session import Session
 import redis
+import logging
+from datetime import timedelta
 
 load_dotenv()
+logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 CORS(app)
-app.secret_key = os.getenv("SECRET_KEY")
-
-app.config["SESSION_PERMANENT"] = False
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_USE_SIGNER"] = True
 app.config["SESSION_TYPE"] = 'redis'
-app.config["SESSION_REDIS"] = redis.Redis(host=os.getenv('REDIS_HOST'), port=12256, password=os.getenv('REDIS_PWD'))
+app.config['SESSION_KEY_PREFIX'] = 'session:'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=2)
+app.config["SESSION_REDIS"] = redis.Redis(host=os.getenv('REDIS_HOST'), port=12256, password=os.getenv('REDIS_PWD'), decode_responses=True)
+r = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=12256, password=os.getenv('REDIS_PWD'), decode_responses=True)
 app.config.from_object(__name__)
 Session(app)
 
@@ -40,7 +45,8 @@ def upload_key():
         if "input" in request.form:
             api_key = request.form["input"]
             session['api_key'] = api_key
-            print(session['api_key'])
+            # res = r.set("api_key", api_key)
+            logging.debug(f"Set API Key: {session['api_key']}")
             return jsonify({"message": "API key received"}), 200
         else:
             return jsonify({"message": "Please input an OpenAI API key"}), 400
@@ -53,12 +59,13 @@ def upload_key():
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-        print(session)
-        if 'api_key' not in session:
-            return jsonify({'error': 'api key required before uploading image'}), 400
+        # print(session)
+        # if 'api_key' not in session:
+        #     return jsonify({'error': 'api key required before uploading image'}), 400
 
-        api_key = session['api_key']
-
+        # api_key = session.get('api_key')
+        api_key = r.get("api_key")
+        logging.debug(f"retrieved API key: {api_key}")
         if "images" in request.files:
             files = request.files.getlist('images')
             base64_images = []
@@ -109,6 +116,9 @@ def upload_image():
             payload["messages"][0]["content"].append(a)
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         print(response.json())
+        # clear session data
+        session.clear()
+        r.flushall()
         # img_info = response.json()["data"]["message"]["chioces"][0]["content"]
         # print(img_info)
         # # Save image data and outcome to database

@@ -7,11 +7,16 @@ from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
 from flask_session import Session
+from redis import Redis
 
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
 app.secret_key = os.getenv("SECRET_KEY")
+app.config["SESSION_PERMANENT"] = False
+SESSION_TYPE = 'redis'
+SESSION_REDIS = Redis(host='localhost', port=6379)
+app.config.from_object(__name__)
 Session(app)
 
 conn = sqlite3.connect('images.db')

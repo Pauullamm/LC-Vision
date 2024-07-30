@@ -7,15 +7,17 @@ from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
 from flask_session import Session
-from redis import Redis
+import redis
 
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
 app.secret_key = os.getenv("SECRET_KEY")
+
 app.config["SESSION_PERMANENT"] = False
-SESSION_TYPE = 'redis'
-SESSION_REDIS = Redis(host='localhost', port=6379)
+app.config["SESSION_USE_SIGNER"] = True
+app.config["SESSION_TYPE"] = 'redis'
+app.config["SESSION_REDIS"] = redis.Redis(host=os.getenv('REDIS_HOST'), port=12256, password=os.getenv('REDIS_PWD'))
 app.config.from_object(__name__)
 Session(app)
 

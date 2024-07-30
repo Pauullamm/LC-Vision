@@ -6,11 +6,13 @@ import requests
 from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
+from flask_session import Session
 
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
 app.secret_key = os.getenv("SECRET_KEY")
+Session(app)
 
 conn = sqlite3.connect('images.db')
 c = conn.cursor()

@@ -21,8 +21,8 @@ app.config["SESSION_USE_SIGNER"] = True
 app.config["SESSION_TYPE"] = 'redis'
 app.config['SESSION_KEY_PREFIX'] = 'session:'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=2)
-app.config["SESSION_REDIS"] = redis.Redis(host=os.getenv('REDIS_HOST'), port=12256, password=os.getenv('REDIS_PWD'), decode_responses=True)
-r = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=12256, password=os.getenv('REDIS_PWD'), decode_responses=True)
+app.config["SESSION_REDIS"] = redis.Redis(host=os.getenv('REDIS_HOST'), port=os.getenv('REDIS_PORT'), password=os.getenv('REDIS_PWD'), decode_responses=True)
+r = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=os.getenv('REDIS_PORT'), password=os.getenv('REDIS_PWD'), decode_responses=True)
 app.config.from_object(__name__)
 Session(app)
 

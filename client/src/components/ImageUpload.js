@@ -13,6 +13,7 @@ function ImageUpload() {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   
+  const sessionID = useSelector((state) => state.session.sessionID); // get session id as state from navbar
   const handleMouseOver = (event) => {
     if (!inputValue.trim()) {
       setTooltipPosition({ x: event.clientX, y: event.clientY });
@@ -67,16 +68,18 @@ function ImageUpload() {
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append('images', selectedFiles[i]);
     }
-    setUploadImage(true)
+    setUploadImage(true); //start loading animation
+    
     try {
-      const port = process.env.REACT_APP_ENDPOINT
+      const port = `${process.env.REACT_APP_ENDPOINT}/${sessionID}`
       const response = await axios.post(port, formData);
       const ai_res = response.data.message.choices[0].message.content;
-      setUploadImage(false);
+      setUploadImage(false); //stop loading animation as successful
       setOutputResponse(ai_res);
       
     } catch (error) {
       console.error('Error uploading images', error);
+      setUploadImage(false); //stop loading animation as failed
     }
   };
 

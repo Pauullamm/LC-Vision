@@ -1,30 +1,23 @@
 import sqlite3
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import base64
 import requests
 from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
-from flask_session import Session
 import redis
 import logging
-from datetime import timedelta
+
 
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 CORS(app)
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-app.config["SESSION_PERMANENT"] = True
-app.config["SESSION_USE_SIGNER"] = True
-app.config["SESSION_TYPE"] = 'redis'
-app.config['SESSION_KEY_PREFIX'] = 'session:'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=2)
-app.config["SESSION_REDIS"] = redis.Redis(host=os.getenv('REDIS_HOST'), port=os.getenv('REDIS_PORT'), password=os.getenv('REDIS_PWD'), decode_responses=True)
-r = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=os.getenv('REDIS_PORT'), password=os.getenv('REDIS_PWD'), decode_responses=True)
+
+redis_client = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=os.getenv('REDIS_PORT'), password=os.getenv('REDIS_PWD'), decode_responses=True)
 app.config.from_object(__name__)
-Session(app)
+
 
 conn = sqlite3.connect('images.db')
 c = conn.cursor()
@@ -44,9 +37,11 @@ def upload_key():
     try:
         if "input" in request.form:
             api_key = request.form["input"]
-            session['api_key'] = api_key
-            # res = r.set("api_key", api_key)
-            logging.debug(f"Set API Key: {session['api_key']}")
+        if "sessionID" in request.form:
+            session_id = request.form["sessionID"]
+            redis_client.setex(session_id, 3600, api_key) # set session to last for 1 hour, deletes api key after that
+
+            logging.debug(f"Set API Key: {redis_client.setex(session_id, 3600, api_key)}")
             return jsonify({"message": "API key received"}), 200
         else:
             return jsonify({"message": "Please input an OpenAI API key"}), 400
@@ -56,15 +51,12 @@ def upload_key():
 
 #image processing
 
-@app.route('/upload', methods=['POST'])
-def upload_image():
+@app.route('/upload/<session_id>', methods=['POST'])
+def upload_image(session_id):
     try:
-        # print(session)
-        # if 'api_key' not in session:
-        #     return jsonify({'error': 'api key required before uploading image'}), 400
-
-        # api_key = session.get('api_key')
-        api_key = r.get("api_key")
+        api_key = redis_client.get(session_id) # obtain api_key which has been stored as a key value pair in redis (sessionID: api key)
+        if not api_key:
+            return jsonify({"message": "Session expired or not found"}), 404
         logging.debug(f"retrieved API key: {api_key}")
         if "images" in request.files:
             files = request.files.getlist('images')
@@ -116,11 +108,8 @@ def upload_image():
             payload["messages"][0]["content"].append(a)
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         print(response.json())
-        # clear session data
-        session.clear()
-        r.flushall()
-        # img_info = response.json()["data"]["message"]["chioces"][0]["content"]
-        # print(img_info)
+        redis_client.flushall() # clear session data upon successful image processing
+
         # # Save image data and outcome to database
         # c.execute('''INSERT INTO images (image_data, outcome) 
         #           VALUES (?, ?)''', 

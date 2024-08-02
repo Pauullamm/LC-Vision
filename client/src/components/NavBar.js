@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setInputValue } from "../redux/actions";
+import { v4 as uuidv4 } from 'uuid';
+import { setSessionID } from "../redux/reducers/sessionSlice";
 //routing
 import { Link } from "react-router-dom";
+
 
 function Navbar() {
     const [apiSectionOpen, setApiSectionOpen] = useState(false);
@@ -36,10 +39,13 @@ function Navbar() {
     };
 
     const handleKeyDown = async (e) => {
+        const sessionID = uuidv4();
+        dispatch(setSessionID(sessionID));
         if (e.key === 'Enter') {
             e.preventDefault();
             const formData = new FormData();
             formData.append('input', inputValue);
+            formData.append('sessionID', sessionID);
             const port = process.env.REACT_APP_KEY_ENDPOINT
             try {
                 const response = await fetch(port, {

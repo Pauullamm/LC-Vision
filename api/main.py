@@ -40,7 +40,7 @@ def upload_key():
 
         session_id = request.form.get("sessionID")
         if session_id:
-            redis_client.setex(session_id, 3600, api_key)  # Set session to last for 1 hour
+            redis_client.set(name=session_id, ex=3600, value=api_key)  # Set session to last for 1 hour
             logging.debug(f"Set API Key: {api_key}")
             return jsonify({"message": "API key received", 'text': request.form}), 200
         else:

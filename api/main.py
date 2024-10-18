@@ -32,24 +32,30 @@ conn.commit()
 @app.route('/key', methods=['POST'])
 def upload_key():
     try:
-        print(request.form)
         api_key = request.form.get("input")  # Safer way to get input
-        print(api_key)
         if not api_key:
             return jsonify({"message": "Please input an OpenAI API key"}), 400
 
         session_id = request.form.get("sessionID")
         if session_id:
-            redis_client.set(name=session_id, ex=3600, value=api_key)  # Set session to last for 1 hour
-            logging.debug(f"Set API Key: {api_key}")
-            return jsonify({"message": "API key received", 'text': request.form}), 200
+            # Set session to last for 1 hour
+            redis_client.set(name=session_id, ex=3600, value=api_key)
+
+            # Retrieve the API key from Redis
+            stored_api_key = redis_client.get(session_id)
+            
+            # Check if stored_api_key is None
+            if stored_api_key is None:
+                return jsonify({"message": "API key could not be retrieved from Redis"}), 500
+
+            return jsonify({"message": "API key received", 'text': stored_api_key}), 200  # Decode if necessary
         else:
             return jsonify({"message": "Session ID is missing"}), 400
 
     except Exception as e:
-        logging.error(f"Error: {str(e)}")  # Use logging instead of print
+        logging.error(f"Error: {str(e)}")
         print(request.form)
-        return jsonify({'error': 'Internal server error: ' + str(e), 'text': request.form}), 500
+        return jsonify({'error': 'Internal server error: ' + str(e), 'text': redis_client.get(session_id)}), 500
 #image processing
 
 @app.route('/upload', methods=['POST'])

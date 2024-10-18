@@ -42,14 +42,14 @@ def upload_key():
         if session_id:
             redis_client.setex(session_id, 3600, api_key)  # Set session to last for 1 hour
             logging.debug(f"Set API Key: {api_key}")
-            return jsonify({"message": "API key received"}), 200
+            return jsonify({"message": "API key received", 'text': request.form}), 200
         else:
             return jsonify({"message": "Session ID is missing"}), 400
 
     except Exception as e:
         logging.error(f"Error: {str(e)}")  # Use logging instead of print
         print(request.form)
-        return jsonify({'error': 'Internal server error: ' + str(e)}), 500
+        return jsonify({'error': 'Internal server error: ' + str(e), 'text': request.form}), 500
 #image processing
 
 @app.route('/upload', methods=['POST'])

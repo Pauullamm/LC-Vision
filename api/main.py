@@ -32,8 +32,9 @@ conn.commit()
 @app.route('/key', methods=['POST'])
 def upload_key():
     try:
+        logging.debug(f"Request form data: {request.form}")
         api_key = request.form.get("input")  # Safer way to get input
-
+        print(api_key)
         if not api_key:
             return jsonify({"message": "Please input an OpenAI API key"}), 400
 
@@ -47,7 +48,7 @@ def upload_key():
 
     except Exception as e:
         logging.error(f"Error: {str(e)}")  # Use logging instead of print
-        return jsonify({'error': 'Internal server error: ' + str(e)}), 500
+        return jsonify({'error': 'Internal server error: ' + str(e) + request.form}), 500
 #image processing
 
 @app.route('/upload', methods=['POST'])

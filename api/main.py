@@ -47,7 +47,7 @@ def upload_key():
 
     except Exception as e:
         logging.error(f"Error: {str(e)}")  # Use logging instead of print
-        return jsonify({'error': 'Internal server error'}), 500
+        return jsonify({'error': 'Internal server error: ' + str(e)}), 500
 #image processing
 
 @app.route('/upload', methods=['POST'])

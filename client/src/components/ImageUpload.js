@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Loader from './Loader';
 import { useSelector } from 'react-redux';
+import ErrorAlert from './ErrorAlert';
 
 function ImageUpload() {
   const [selectedFiles, setSelectedFiles] = useState(null);
@@ -12,6 +13,7 @@ function ImageUpload() {
   const inputValue = useSelector((state) => state.input.inputValue);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [errorMessage, setErrorMessage] = useState(null);
   
   const sessionID = useSelector((state) => state.session.sessionID); // get session id as state from navbar
   const handleMouseOver = (event) => {
@@ -61,17 +63,20 @@ function ImageUpload() {
   const handleUpload = async () => {
     const formData = new FormData();
     if (!selectedFiles) {
-      console.log("Please choose an image first");
+      setErrorMessage("Please choose an image first");
       return
     };
 
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append('images', selectedFiles[i]);
+      formData.append('sessionID', sessionID);
     }
     setUploadImage(true); //start loading animation
     
     try {
-      const port = `${process.env.REACT_APP_ENDPOINT}/${sessionID}`
+      const port = process.env.REACT_APP_IMG_ENDPOINT //make sure .env is same level as package.json
+      // console.log(port)
+      // console.log(sessionID)
       const response = await axios.post(port, formData);
       const ai_res = response.data.message.choices[0].message.content;
       setUploadImage(false); //stop loading animation as successful
@@ -80,6 +85,7 @@ function ImageUpload() {
     } catch (error) {
       console.error('Error uploading images', error);
       setUploadImage(false); //stop loading animation as failed
+      setErrorMessage(error.message);
     }
   };
 
@@ -123,9 +129,10 @@ function ImageUpload() {
         
         {resizedImage && <img src={resizedImage} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
       </div>
+      {}
       {uploadImage && <Loader />}
       <div className="flex justify-center"><p className="w-1/2 text-gray-300">{outputResponse}</p></div>
-      
+      {errorMessage ? <ErrorAlert alertText={errorMessage} /> : null}
     </div>
   );
 }

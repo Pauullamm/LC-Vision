@@ -1,20 +1,17 @@
 import sqlite3
 from flask import Flask, request, jsonify
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import base64
 import requests
-from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
 import redis
 import logging
 
-
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 CORS(app)
-
 redis_client = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=os.getenv('REDIS_PORT'), password=os.getenv('REDIS_PWD'), decode_responses=True)
 app.config.from_object(__name__)
 
@@ -31,11 +28,13 @@ c.execute('''CREATE TABLE IF NOT EXISTS images (
 )''')
 conn.commit()
 
-#api key processing
+#api key and session processing
 @app.route('/key', methods=['POST'])
 def upload_key():
     try:
         if "input" in request.form:
+            #encrypting API key
+            
             api_key = request.form["input"]
         if "sessionID" in request.form:
             session_id = request.form["sessionID"]
@@ -51,11 +50,12 @@ def upload_key():
 
 #image processing
 
-@app.route('/upload/<session_id>', methods=['POST'])
-def upload_image(session_id):
+@app.route('/upload', methods=['POST'])
+def upload_image():
     try:
+        session_id = request.form['sessionID']
         api_key = redis_client.get(session_id) # obtain api_key which has been stored as a key value pair in redis (sessionID: api key)
-        if not api_key:
+        if api_key is None:
             return jsonify({"message": "Session expired or not found"}), 404
         logging.debug(f"retrieved API key: {api_key}")
         if "images" in request.files:

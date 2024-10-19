@@ -53,9 +53,12 @@ function Navbar() {
                     body: formData
                 });
                 if (response.ok) {
-                    console.log(response);
+                    const data = await response.json()
+                    console.log(data);
                 } else {
-                    console.error('Error submitting data');
+                    const error_data = await response.json()
+
+                    console.error(`Error submitting data`, error_data);
                 };
             } catch (error) {
                 console.error('Error:', error);

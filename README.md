@@ -54,10 +54,12 @@ To run this project, you will need to add the following environment variables to
 
 **Server:** Flask, Render, Redis
 
+**RAG:** Pinecone, OpenAI models (gpt-4o, text-embedding-3-large), LangChain
 
 todo:
 
-1. set up feedback database for RLHF
-2. link frontend to be processed by lc backend on flask
-3. fix image processing errors - fix upload and api key endpoints
-4. prepare images for testing
+1. link frontend to be processed by lc backend on flask ✔️
+2. fix image processing errors - fix upload and api key endpoints ✔️
+3. prepare images for testing
+4. firebase authentication
+5. set up feedback database for RLHF

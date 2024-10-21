@@ -4,7 +4,7 @@ import axios from 'axios';
 import Loader from './Loader';
 import { useSelector } from 'react-redux';
 import ErrorAlert from './ErrorAlert';
-import ChatDisplay from './ChatDisplay';
+import ChatDisplay from './TextDisplay';
 import { GoTrash } from "react-icons/go";
 
 
@@ -98,37 +98,46 @@ function ImageUpload() {
       <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">1. Enter your OpenAI API key</h1>
       <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">2. Select an image to upload</h1>
       <div className="flex justify-center">
-        <div className="flex justify-center py-2 px-2 border-solid border-2 w-max h-max rounded-md mt-5">
-          <div className="content-center">
-            <input className="text-gray-300" type="file" multiple onChange={handleFileChange} />
+        <div className="flex flex-col md:flex-row justify-center py-2 px-2 border-solid border-2 w-full max-w-md h-max rounded-md mt-5">
+          <div className="content-center mb-4 md:mb-0 md:mr-4">
+            <input 
+              className="text-gray-300 w-full" 
+              type="file" 
+              multiple 
+              onChange={handleFileChange} 
+            />
           </div>
-          <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center" 
-          style={{ cursor: inputValue.trim() ? 'pointer' : 'not-allowed' }} 
-          disabled={!inputValue.trim()} 
-          onClick={handleUpload}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-          >Upload</button>
+
+          <button 
+            className={`bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center w-full md:w-auto ${!inputValue.trim() ? 'opacity-50' : ''}`} 
+            style={{ cursor: inputValue.trim() ? 'pointer' : 'not-allowed' }} 
+            disabled={!inputValue.trim()} 
+            onClick={handleUpload}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
+            Upload
+          </button>
 
           {tooltipVisible && (
-        <div 
-          style={{ 
-            position: 'absolute', 
-            left: `${tooltipPosition.x}px`, 
-            top: `${tooltipPosition.y}px`,
-            backgroundColor: 'black',
-            color: 'white',
-            padding: '5px',
-            borderRadius: '3px',
-            pointerEvents: 'none'
-          }}
-        >
-          Please add your API key first!
+            <div 
+              style={{ 
+                position: 'absolute', 
+                left: `${tooltipPosition.x}px`, 
+                top: `${tooltipPosition.y}px`,
+                backgroundColor: 'black',
+                color: 'white',
+                padding: '5px',
+                borderRadius: '3px',
+                pointerEvents: 'none'
+              }}
+            >
+              Please add your API key first!
+            </div>
+          )}
         </div>
-      )}
-        </div>
-        
       </div>
+
       <div className="flex justify-center">
         
         {resizedImage && <img src={resizedImage} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
@@ -152,7 +161,7 @@ function ImageUpload() {
           my-5">
           <div className='flex justify-evenly w-full'>
             <ChatDisplay displayTitle={'AI Description'} outputResponse={outputResponse[0]}/>
-            <ChatDisplay displayTitle={'AI Interpretation'} outputResponse={outputResponse[1]}/>
+            <ChatDisplay displayTitle={'AI Predictions'} outputResponse={outputResponse[1]}/>
           </div>
           <div className='flex justify-center'>
             <button 

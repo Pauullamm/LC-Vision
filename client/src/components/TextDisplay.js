@@ -15,15 +15,15 @@ const ChatDisplay = ({ displayTitle, outputResponse }) => {
       } else {
         clearInterval(interval);
       }
-    }, 20); // Adjust the interval for speed (100ms in this example)
+    }, 20);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [outputResponse]);
 
-  // Split the displayed text into lines and render with <br /> for line breaks
   const lines = displayedText.split('---').map((line, idx) => (
     <React.Fragment key={idx}>
-      {line.trim()}
+    <span style={{ color: 'white' }}>{line.trim()}</span>
+      <br />
       <br />
     </React.Fragment>
   ));

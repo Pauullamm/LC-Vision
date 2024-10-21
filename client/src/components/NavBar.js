@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInputValue } from "../redux/actions";
 import { v4 as uuidv4 } from 'uuid';
 import { setSessionID } from "../redux/reducers/sessionSlice";
-//routing
 import { Link } from "react-router-dom";
 
 
@@ -54,7 +53,7 @@ function Navbar() {
                 });
                 if (response.ok) {
                     const data = await response.json()
-                    console.log(data);
+                    console.log(data.message);
                 } else {
                     const error_data = await response.json()
 

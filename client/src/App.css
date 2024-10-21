@@ -2,3 +2,23 @@
   text-align: center;
 }
 
+/* src/App.css or your main CSS file */
+.animation-background {
+  position: fixed; /* Use fixed or absolute depending on your layout */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Sends it to the background */
+  opacity: 0.3; /* Adjust opacity for translucency */
+  pointer-events: none; /* Makes sure it doesn’t block interactions */
+}
+
+.animation-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Hide overflow */
+  display: flex; /* Center the Lottie animation */
+  justify-content: center;
+  align-items: center;
+}

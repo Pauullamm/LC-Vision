@@ -4,11 +4,14 @@ import axios from 'axios';
 import Loader from './Loader';
 import { useSelector } from 'react-redux';
 import ErrorAlert from './ErrorAlert';
+import ChatDisplay from './ChatDisplay';
+import { MdClear } from "react-icons/md";
+
 
 function ImageUpload() {
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [resizedImage, setResizedImage] = useState(null);
-  const [outputResponse, setOutputResponse] = useState("");
+  const [outputResponse, setOutputResponse] = useState(["", ""]);
   const [uploadImage, setUploadImage] = useState(false)
   const inputValue = useSelector((state) => state.input.inputValue);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -27,6 +30,9 @@ function ImageUpload() {
     setTooltipVisible(false);
   };
 
+  const clearOutput = () => {
+    setOutputResponse(["", ""]);
+  };
 
   const handleFileChange = (event) => {
     setSelectedFiles(event.target.files);
@@ -75,12 +81,10 @@ function ImageUpload() {
     
     try {
       const port = process.env.REACT_APP_IMG_ENDPOINT //make sure .env is same level as package.json
-      // console.log(port)
-      // console.log(sessionID)
       const response = await axios.post(port, formData);
       const ai_res = response.data.message.choices[0].message.content;
       setUploadImage(false); //stop loading animation as successful
-      setOutputResponse(ai_res);
+      setOutputResponse([ai_res, response.data.interpretation]);
       
     } catch (error) {
       console.error('Error uploading images', error);
@@ -90,7 +94,7 @@ function ImageUpload() {
   };
 
   return (
-    <div className="flex flex-col md:min-w-sm">
+    <div className="flex flex-col md:min-w-sm items-center">
       <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">1. Enter your OpenAI API key</h1>
       <h1 className="mt-5 text-gray-300 text-2xl font-bold text-center">2. Select an image to upload</h1>
       <div className="flex justify-center">
@@ -130,8 +134,26 @@ function ImageUpload() {
         {resizedImage && <img src={resizedImage} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
       </div>
       {}
-      {uploadImage && <Loader />}
-      <div className="flex justify-center"><p className="w-1/2 text-gray-300">{outputResponse}</p></div>
+      {uploadImage && <Loader />}      
+        <div className="flex flex-col items-center justify-center text-center border-solid border-2 border-gray-600 p-6 rounded-lg shadow-lg w-full max-w-3xl md:max-w-md my-5">
+          <h4 className="w-full max-w-md text-gray-300 py-5">
+              <ChatDisplay displayTitle={'AI Description'} outputResponse={outputResponse[0]}/>
+          </h4>
+          <h4 className="w-full max-w-md text-gray-300 py-5">
+            <ChatDisplay displayTitle={'AI Interpretation'} outputResponse={outputResponse[1]}/>
+          </h4>
+          <div className='flex justify-center'>
+          
+          <button 
+              className="mt-4 bg-gray-500 text-white py-2 px-4 rounded"
+              onClick={clearOutput}
+            >
+              <MdClear />
+              </button>
+          </div>
+
+        </div>
+
       {errorMessage ? <ErrorAlert alertText={errorMessage} /> : null}
     </div>
   );

@@ -16,7 +16,8 @@ def query_db(query_vector):
       top_k=3,
       include_metadata=True
   )
-  print(query_results)
-  contexts = [item['metadata']['text'] for item in query_results['matches']]
-  augmented_query = "\n\n---\n\n".join(contexts)+"\n\n-----\n\n"
+  contexts = [f"{item['metadata']['text']} (Score: {item['score']})" for item in query_results['matches']]
+  
+  augmented_query = "\n\n---\n\n".join(contexts) + "\n\n-----\n\n"
+  print(augmented_query)
   return augmented_query

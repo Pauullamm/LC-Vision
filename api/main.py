@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 import redis
 import logging
+from utils import embed, query, retriever
 
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
@@ -115,16 +116,20 @@ def upload_image():
             }
             payload["messages"][0]["content"].append(a)
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-        print(response.json())
-        redis_client.flushall() # clear session data upon successful image processing
 
         # # Save image data and outcome to database
         # c.execute('''INSERT INTO images (image_data, outcome) 
         #           VALUES (?, ?)''', 
         #           (decoded_image, outcome))
         # conn.commit()
-
-        return jsonify({ 'message': response.json()})
+        res = response.json()
+        print(res)
+        initial_query = res['choices'][0]['message']['content']
+        vectorised_query = embed.embed_query(initial_query, api_key, "text-embedding-3-large")
+        pinecone_res = query.query_db(vectorised_query) # query pinecone vectorstore
+        interpretation = retriever.generate_augmented_query(pinecone_res)
+        redis_client.flushall() # clear session data upon successful image processing
+        return jsonify({ 'message': response.json(), 'interpretation': interpretation })
     except Exception as e:
         print(f"Error processing images: {e}")
         return jsonify({'error': 'Internal server error'}), 500

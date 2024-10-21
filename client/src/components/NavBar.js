@@ -112,12 +112,10 @@ function Navbar() {
                         </div>)}
                         </div>
                     </div>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0" >
-                            <h2 className="navbar-title text-3xl font-black italic text-gray-300">LC-Vision Pill Checker </h2>
-                            <h2 className="navbar-title text-3xl font-black text-gray-300">🔎</h2>
-
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 flex-wrap">
+                            <h2 className="navbar-title text-xl sm:text-3xl font-black italic text-gray-300">LC-Vision Pill Checker</h2> {/* Smaller font on mobile */}
+                            <h2 className="navbar-title text-xl sm:text-3xl font-black text-gray-300 ml-2">🔎</h2> {/* Adjusted spacing */}
                         </div>
-                        
                     </div>
                 </div>
                 {/* <!-- Mobile menu, show/hide based on menu state. --> */}

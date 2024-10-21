@@ -29,8 +29,8 @@ const ChatDisplay = ({ displayTitle, outputResponse }) => {
   ));
 
   return (
-    <div>
-      <h4 className="text-gray-300">{displayTitle}</h4>
+    <div className='mx-5 text-center w-full'>
+      <h4 className="text-gray-300 text-xl font-bold">{displayTitle}</h4>
       {lines}
     </div>
   );

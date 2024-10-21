@@ -5,7 +5,7 @@ import Loader from './Loader';
 import { useSelector } from 'react-redux';
 import ErrorAlert from './ErrorAlert';
 import ChatDisplay from './ChatDisplay';
-import { MdClear } from "react-icons/md";
+import { GoTrash } from "react-icons/go";
 
 
 function ImageUpload() {
@@ -135,22 +135,36 @@ function ImageUpload() {
       </div>
       {}
       {uploadImage && <Loader />}      
-        <div className="flex flex-col items-center justify-center text-center border-solid border-2 border-gray-600 p-6 rounded-lg shadow-lg w-full max-w-3xl md:max-w-md my-5">
-          <h4 className="w-full max-w-md text-gray-300 py-5">
-              <ChatDisplay displayTitle={'AI Description'} outputResponse={outputResponse[0]}/>
-          </h4>
-          <h4 className="w-full max-w-md text-gray-300 py-5">
+        <div className="
+          flex 
+          flex-col 
+          items-center 
+          justify-evenly 
+          text-center 
+          border-solid
+          border-2 
+          border-gray-300 
+          p-5 
+          rounded-lg 
+          shadow-lg 
+          w-full 
+          max-w-3xl 
+          my-5">
+          <div className='flex justify-evenly w-full'>
+            <ChatDisplay displayTitle={'AI Description'} outputResponse={outputResponse[0]}/>
             <ChatDisplay displayTitle={'AI Interpretation'} outputResponse={outputResponse[1]}/>
-          </h4>
+          </div>
           <div className='flex justify-center'>
-          
-          <button 
-              className="mt-4 bg-gray-500 text-white py-2 px-4 rounded"
+            <button 
+              className="clear-butt mt-4 bg-gray-500 text-white py-2 px-4 rounded items-center text-sm flex"  // Added 'flex' here
               onClick={clearOutput}
             >
-              <MdClear />
-              </button>
+              <span className="flex items-center"> {/* This ensures text and icon are aligned */}
+                Clear Output <GoTrash className="ml-2" /> {/* Added margin-left for spacing */}
+              </span>
+            </button>
           </div>
+
 
         </div>
 

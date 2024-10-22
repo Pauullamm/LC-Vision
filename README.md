@@ -60,7 +60,7 @@ todo:
 
 1. link frontend to be processed by lc backend on flask ✔️
 2. fix image processing errors - fix upload and api key endpoints ✔️
-3. Convert image recognition results to embeddings to query pinecone vector store
+3. Convert image recognition results to embeddings to query pinecone vector store ✔️
 4. prepare images for testing
 5. firebase authentication
 6. set up feedback database for RLHF

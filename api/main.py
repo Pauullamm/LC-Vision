@@ -1,13 +1,11 @@
-import sqlite3
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import base64
-import requests
 import os
 from dotenv import load_dotenv
 import redis
 import logging
-from utils import embed, query
+from utils import embed, query, convert
 
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
@@ -15,19 +13,6 @@ app = Flask(__name__)
 CORS(app)
 redis_client = redis.StrictRedis(host=os.getenv('REDIS_HOST'), port=os.getenv('REDIS_PORT'), password=os.getenv('REDIS_PWD'), decode_responses=True)
 app.config.from_object(__name__)
-
-
-conn = sqlite3.connect('images.db')
-c = conn.cursor()
-
-# Database schema definition (executed only once)
-c.execute('''CREATE TABLE IF NOT EXISTS images (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            image_data TEXT,
-            outcome TEXT,
-            comment TEXT
-)''')
-conn.commit()
 
 #api key and session processing
 @app.route('/key', methods=['POST'])
@@ -78,50 +63,7 @@ def upload_image():
             print(outcome)
         else:
             return jsonify({"message": "Please upload an image"})
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
-}
-        payload = {
-            "model": "gpt-4o",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": '''Describe the tablet(s) and/or capsule(s) in this image, and only the tablet(s) and/or capsule(s).
-                                        Please format your answer based on the following:
-                                        1. Colour: i.e. what colour(s) are the tablet(s)/capsule(s)
-                                        2. Shape: i.e. what shape(s) are the tablet(s)/capsule(s)
-                                        3. Markings: i.e. what markings are visible on the tablet(s)/capsule(s)
-                                        4. Additional details:  for example - score lines, or how the markings/colours are printed on the tablet/capsule. If there are no additional details, answer with "NIL"
-                                        5. Visibility: i.e. How well you are able to see the details on the tablet/capsule (respond with a float number between 0 to 10)
-                                        If you are unable to see any of the above clearly, mention it in your response, don't try to guess what the ambiguous features are
-                                        If there are no tablet(s)/capsule(s) in the image, respond with:
-                                        "No tablet(s)/capsule(s) identified, please try again"
-                                        '''
-                        }
-                    ]
-                }
-            ],
-            "max_tokens": 300
-            }
-        for image_data in base64_images:
-            a = {
-                "type": "image_url",
-                "image_url": {
-                            "url": f"data:image/jpeg;base64,{image_data}",
-                            }
-            }
-            payload["messages"][0]["content"].append(a)
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-
-        # # Save image data and outcome to database
-        # c.execute('''INSERT INTO images (image_data, outcome) 
-        #           VALUES (?, ?)''', 
-        #           (decoded_image, outcome))
-        # conn.commit()
+        response = convert.image_to_text(api_key, base64_images)
         res = response.json()
         print(res)
         initial_query = res['choices'][0]['message']['content']

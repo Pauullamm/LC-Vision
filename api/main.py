@@ -18,7 +18,7 @@ app.config.from_object(__name__)
 @app.route('/key', methods=['POST'])
 def upload_key():
     try:
-        api_key = request.form.get("input")  # Safer way to get input
+        api_key = request.form.get("input")
         if not api_key:
             return jsonify({"message": "Please input an OpenAI API key"}), 400
 
@@ -42,7 +42,6 @@ def upload_key():
         logging.error(f"Error: {str(e)}")
         print(request.form)
         return jsonify({'error': 'Internal server error: ' + str(e), 'text': redis_client.get(session_id)}), 500
-#image processing
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
@@ -56,19 +55,18 @@ def upload_image():
             files = request.files.getlist('images')
             base64_images = []
             for file in files:
-                image_data = file.read() # read file as bytes
+                image_data = file.read()
                 base64_image = base64.b64encode(image_data).decode('utf-8') # convert bytes to base64 string
                 base64_images.append(base64_image)
-            outcome = "Image(s) received!"
-            print(outcome)
+            print("Image(s) received!")
         else:
             return jsonify({"message": "Please upload an image"})
+
         response = convert.image_to_text(api_key, base64_images)
         res = response.json()
-        print(res)
         initial_query = res['choices'][0]['message']['content']
-        vectorised_query = embed.embed_query(initial_query, api_key, "text-embedding-3-large")
-        pinecone_res = query.query_db(vectorised_query) # query pinecone vectorstore
+        hf_query = embed.hf_embed(url=os.getenv('HF_MODEL_URL'), query=initial_query, apikey=os.getenv('HF_API_KEY')) # obtain embeddings using huggingface model + serverless inference api
+        pinecone_res = query.query_db(hf_query)
         redis_client.flushall() # clear session data upon successful image processing
         return jsonify({ 'message': response.json(), 'interpretation': pinecone_res })
     except Exception as e:

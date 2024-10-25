@@ -106,8 +106,9 @@ def hf_image_text_to_text(api_key: str, images: list, model: str):
                     ],
                 }
             ],
-            max_tokens=300,
+            max_tokens=100,
             stream=True,
+            temperature=0.1
         ):
             image_result += message.choices[0].delta.content
         

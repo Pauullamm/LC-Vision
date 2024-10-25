@@ -23,6 +23,10 @@ To run this project, you will need to add the following environment variables to
 
 `REDIS_PORT` - Redis cloud port
 
+`PINECONE_API_KEY` - API key for Pinecone Vector database
+
+`PINECONE_INDEX_NAME` - Name of index to create in Pinecone
+
 
 
 ## Flask API endpoints
@@ -54,7 +58,7 @@ To run this project, you will need to add the following environment variables to
 
 **Server:** Flask, Render, Redis
 
-**RAG:** Pinecone, OpenAI models (gpt-4o, text-embedding-3-large), LangChain
+**RAG:** Pinecone, OpenAI models (gpt-4o, text-embedding-3-large), LangChain, huggingface models
 
 todo:
 

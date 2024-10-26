@@ -1,19 +1,24 @@
 
 # LC-Vision
 
-This is an ongoing project being built alongside the LC Pill Checker project to expand its capabilities to allow for image analysis
+This is an ongoing project being built alongside the LC Pill Checker project to expand its capabilities to allow for image analysis/interpretation of tablets and capsules
 
 ## Architecture
 
-![diagram-export-01-08-2024-20_10_11](https://github.com/user-attachments/assets/d69b9a9a-364c-4745-b36e-6038186d2047)
+![image](https://github.com/user-attachments/assets/2ef85dc8-a9b0-42ca-a7de-d7f28f5725ef)
+
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+To run this project, you will need to add the following environment variables to your .env files
+
+Client:
 
 `REACT_APP_IMG_ENDPOINT`- API endpoint to upload images to
 
 `REACT_APP_KEY_ENDPOINT` - API endpoint to store the user's OpenAI API key
+
+API:
 
 `SECRET_KEY` - for flask sessions configuration
 
@@ -65,6 +70,7 @@ todo:
 1. link frontend to be processed by lc backend on flask ✔️
 2. fix image processing errors - fix upload and api key endpoints ✔️
 3. Convert image recognition results to embeddings to query pinecone vector store ✔️
-4. prepare images for testing
-5. firebase authentication
-6. set up feedback database for RLHF
+4. Test huggingface models
+5. prepare images for testing
+6. firebase authentication
+7. set up feedback database for RLHF

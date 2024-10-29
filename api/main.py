@@ -65,8 +65,10 @@ def upload_image():
         response = convert.image_to_text(api_key, base64_images)
         res = response.json()
         initial_query = res['choices'][0]['message']['content']
-        hf_query = embed.hf_embed(url=os.getenv('HF_MODEL_URL'), query=initial_query, apikey=os.getenv('HF_API_KEY')) # obtain embeddings using huggingface model + serverless inference api
-        pinecone_res = query.query_db(hf_query)
+        openai_embed_query = embed.embed_query(query=initial_query, apikey=api_key, embed_model='text-embedding-3-large')
+        # hf_query = embed.hf_embed(url=os.getenv('HF_MODEL_URL'), query=initial_query, apikey=os.getenv('HF_API_KEY')) # obtain embeddings using huggingface model + serverless inference api
+        # pinecone_res = query.query_db(hf_query)
+        pinecone_res = query.query_db(openai_embed_query)
         redis_client.flushall() # clear session data upon successful image processing
         return jsonify({ 'message': response.json(), 'interpretation': pinecone_res })
     except Exception as e:

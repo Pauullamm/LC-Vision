@@ -8,7 +8,7 @@ api_key = os.getenv('OPENAI_API_KEY')
 
 def embed_query(query, apikey, embed_model):
   client = OpenAI(api_key=apikey)
-  return client.embeddings.create(input = [query], model=embed_model, dimensions=1024).data[0].embedding
+  return client.embeddings.create(input = [query], model=embed_model, dimensions=1536).data[0].embedding
 
 def hf_embed(url:str, query:str, apikey:str) -> list[float]:
   headers = {'Authorization': 'Bearer ' + apikey,

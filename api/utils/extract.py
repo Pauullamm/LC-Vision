@@ -21,7 +21,6 @@ headers = {
 }
 
 def get_elements_of_letter(url):
-    """Gets the total number of drugs under the specific letter"""
     r = requests.get(url, headers=headers)
     letter_soup = BeautifulSoup(r.text, 'html.parser')
     total_elements = letter_soup.find(class_='latest-updates-results-header-summary-total')
@@ -30,7 +29,6 @@ def get_elements_of_letter(url):
     return total_elements
 
 def get_urls(num, link):
-    """Returns a set of URLs for each item"""
     output_urls = set()
     for i in tqdm(range(1, num + 1, 50)):
         url_to_check = f'{link}?offset={i}&limit=50'
@@ -46,6 +44,11 @@ def get_urls(num, link):
         time.sleep(1)
                 
     return output_urls
+
+def remove_html_tags(text):
+    if isinstance(text, str):
+        return re.sub(r'<[^>]+>', '', text)
+    return text
 
 def scrape_variable(url):
     chrome_options = webdriver.ChromeOptions()
@@ -90,14 +93,14 @@ def scrape_variable(url):
         # Medicine Description
         description = "N/A"
         try:
-          # Execute JavaScript to obtain the variable 'allDetails'
-          all_details = driver.execute_script("return allDetails[2].childNodes[2].innerHTML;")
-          
-          description_pattern = r"<p>(.*?)</p>"
-          if all_details:
-              description = re.sub(description_pattern, r"\1", all_details)
+            # Execute JavaScript to obtain the variable 'allDetails'
+            all_details = driver.execute_script("return allDetails[2].childNodes[2].innerHTML;")
+            
+            description_pattern = r"<p>(.*?)</p>"
+            if all_details:
+                description = re.sub(description_pattern, r"\1", all_details)
         except:
-          pass
+            pass
         
         # Company name
         company = "N/A"
@@ -137,5 +140,6 @@ for url in tqdm(urls_list):
     time.sleep(1)
 
 results_df = pd.DataFrame(results)
+results_df['Description'] = results_df['Description'].apply(remove_html_tags)
 
 results_df.to_csv("medicine_data.csv", index=False)

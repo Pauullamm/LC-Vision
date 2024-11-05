@@ -1,52 +1,63 @@
 import React from 'react';
 
 export default function AboutPage() {
-return (
-<div className='flex flex-col'>
-    <h1 className="text-center text-2xl font-bold text-gray-300">
-    Hi there! 👋 Thanks for checking out LC-Vision 😊
-    </h1>
-    <br />
-    <p className="text-center text-lg font-medium text-gray-300">
-    I originally had the idea of creating an application which would allow one to 
-    take a photo of an unknown tablet or capsule, and it would use image recognition to identify that unknown pill. 
-    <br />
-    However, the issue is that most pharmaceutical companies do not publish images of their tablets/capsules.
-    <br />
-    So instead, I thought of utilizing text descriptions of tablets and capsules as a means to identify them using retrieval augmented generation (RAG). This led me to make LC-Pill Checker, a simple interface/chatbot where one can ask an LLM questions about pill descriptions.
-    <br />
-    
-    <br />
-    This was useful as you could be flexible in how you ask it questions too such as:
-    <br />
-    </p>
-    <div className="text-center text-lg font-medium text-gray-300">
-    <ol>
-        <li>"What color do warfarin tablets come in?"</li>
-        <li>"List out 5 tablets/capsules that are blue in color as well as their manufacturers"</li>
-        <li>"Among these medications *list of medications*, which one of these are scored?"</li>
-    </ol>
-    </div>
+  return (
+    <div className="max-w-3xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+      {/* Main Heading */}
+      <h1 className="text-center text-3xl font-bold text-white mb-6">
+        Hi there! 👋 Thanks for checking out LC-Vision 😊
+      </h1>
 
-    <div className='flex flex-col text-center text-gray-300 text-lg font-medium'>
-        <h1 className='text-3xl font-black italic'>HOWEVER</h1>
-        <p>We know that a picture is worth a thousand words</p>
-        <p>I decided that this was not the end of the project and still wanted to find a way to incorporate image recognition in the loop</p>
+      {/* Introduction Paragraph */}
+      <p className="text-lg text-gray-300 mb-4">
+        I originally had the idea of creating an application that would allow you to take a photo of an unknown tablet or capsule, and it would use image recognition to identify that pill. However, the challenge was that most pharmaceutical companies don't publish images of their tablets/capsules.
+      </p>
 
-        <p>So I thought to myself, "why not link the current RAG functionality to a user interface which describes images of pills and feed that description to the LLM?" </p>
+      {/* Transition Paragraph */}
+      <p className="text-lg text-gray-300 mb-4">
+        So, instead, I thought of utilizing text descriptions of tablets and capsules as a way to identify them using retrieval-augmented generation (RAG). This led me to create LC-Pill Checker—a simple interface/chatbot where you can ask questions about pill descriptions.
+      </p>
+
+      {/* Use Cases */}
+      <div className="bg-gray-700 p-4 rounded-lg mb-6">
+        <h2 className="text-xl text-white font-semibold mb-3">Here are some example queries I've tried to ask:</h2>
+        <ol className="list-inside list-decimal text-gray-300">
+          <li>"What color do warfarin tablets come in?"</li>
+          <li>"List out 5 tablets/capsules that are blue in color and their manufacturers"</li>
+          <li>"Among these medications: *list of medications*, which ones are scored?"</li>
+        </ol>
+      </div>
+
+      {/* Transition with Highlighted Text */}
+      <div className="text-center text-gray-300 mb-6">
+        <h2 className="text-3xl font-black italic text-white">HOWEVER...</h2>
+        <p className="text-lg mb-3">A picture is worth a thousand words, right?</p>
+        <p className="text-lg mb-6">
+          I still wanted to find a way to incorporate image recognition into the project, so I thought, "Why not link the current RAG functionality to a user interface that describes images of pills and feed that description to the LLM?"
+        </p>
+        <p className="text-lg text-gray-300">And that’s how LC-Vision came into being!</p>
+      </div>
+
+      {/* Work-in-Progress Statement */}
+      <div className="text-center text-gray-300 mb-6">
+        <p className="italic text-lg">This is still very much a work in progress, and sometimes I have no idea what I'm doing...</p>
+      </div>
+
+      {/* GIF Section */}
+      <div className="flex justify-center items-center mb-6">
+        <img
+          alt="tech"
+          src="https://media1.giphy.com/media/NAcNfRrU6f2bC/giphy.gif"
+          className="max-w-full h-auto rounded-lg"
+        />
+      </div>
+
+      {/* Closing Remarks */}
+      <p className="text-center text-lg text-gray-300">
+        Please don't expect this to be a marketable product in any way, shape, or form 😂, but in the meantime, I hope you enjoy fiddling around with it. Feel free to send me any suggestions. Thanks!
         <br />
-        <p>And with that, LC-Vision came into being</p>
-        
+        - Paul
+      </p>
     </div>
-    <p className='text-center text-gray-300 text-lg font-medium'>This is still very much a work in progress, and sometimes I have no idea what I'm doing</p>
-    <div className='flex justify-center items-center'>
-        <img alt='tech' src='https://media1.giphy.com/media/NAcNfRrU6f2bC/giphy.gif' className='h-1/5 w-1/5'></img>
-    </div>
-    <br />
-    <p className='text-center text-gray-300 text-lg font-medium'>So please don't expect this to be a marketable product in any way, shape, or form hahaha, but in the meantime, I hope you'll enjoy fiddling around with it, please let me know if you have any suggestions, thank you!
-    - Paul
-    </p>
-
-</div>
-);
+  );
 }

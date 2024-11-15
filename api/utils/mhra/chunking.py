@@ -17,11 +17,13 @@ def chunk_pdf_from_url(url, chunk_size=400, overlap=50):
     
     # Step 1: Download the PDF from the URL
     r = requests.get(url)
-    with open('downloaded_file.pdf', 'wb') as f:
+    path = f'{url.replace("https://", "").replace("/", "_")}.pdf'
+
+    with open(path, 'wb') as f:
         f.write(r.content)
 
     # Step 2: Open the PDF using PyMuPDF (fitz)
-    with fitz.open('downloaded_file.pdf') as doc:  # This ensures the file is properly closed
+    with fitz.open(path) as doc:  # This ensures the file is properly closed
         # Step 3: Extract text from each page
         full_text = ""
         for page_num in range(doc.page_count):
@@ -38,7 +40,7 @@ def chunk_pdf_from_url(url, chunk_size=400, overlap=50):
         chunks.append(chunk)
     
     # Step 6: Clean up by removing the downloaded PDF file
-    os.remove('downloaded_file.pdf')
+    os.remove(path)
 
     return chunks
 
